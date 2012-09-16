@@ -20,8 +20,8 @@ function populatedropdown(dayfield, monthfield, yearfield){
     dayfield.options[i]=new Option(i, i+1)
 dayfield.options[today.getDate()]=new Option(today.getDate(), today.getDate(), true, true) //select today's day
 for (var m=0; m<12; m++)
-  monthfield.options[m]=new Option(monthtext[m], monthtext[m])
-monthfield.options[today.getMonth()]=new Option(monthtext[today.getMonth()], monthtext[today.getMonth()], true, true) //select today's month
+  monthfield.options[m]=new Option(monthtext[m], m+1)
+monthfield.options[today.getMonth()]=new Option(monthtext[today.getMonth()], today.getMonth()+1, true, true) //select today's month
 var thisyear=today.getFullYear()
 for (var y=0; y<20; y++){
   yearfield.options[y]=new Option(thisyear, thisyear)
@@ -51,9 +51,10 @@ function populatedropdowntime(hourfield, minutefield){
   </script>
   <h2> New Alarm </h2>
   <div class="row-fluid">
+
     <form name="addDateForm" method="post" action ="/">
       <div class="span5" id="date">
-
+        <h3>Day</h3>
         <select name="day" id="daydropdown">
         </select> 
         <select name="month" id="monthdropdown">
@@ -61,13 +62,14 @@ function populatedropdowntime(hourfield, minutefield){
         <select name="year" id="yeardropdown">
         </select> 
       </div>
-      <div class="span3" id="date">
+      <div class="span4" id="date">
+        <h3>Time</h3>
         <select name="hour" id="hourdropdown">
         </select>
         <select name="minute" id="minutedropdown">
         </select>
       </div>
-      <div class="span1" id="date">
+      <div class="span1" id="date" valign="center">
         <button type="button" onclick="document['addDateForm'].submit()" text="Add" class="btn btn-primary">Add</button>
 
       </div>
