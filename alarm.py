@@ -1,7 +1,15 @@
 from flask import Flask, session, redirect, url_for, escape, request, flash
 from flask import render_template
+from datetime import date
+from apscheduler.scheduler import Scheduler
 
 app = Flask(__name__)
+
+def extract_date_name(job):
+	return (job.name, job.trigger.run_date)
+
+def extract_dates_names(jobs):
+	return [extract_date_name(x) for x in jobs]
 
 @app.route("/", methods=['GET','POST'])
 def main_page():
@@ -12,7 +20,8 @@ def main_page():
 	else:
 		pass
 
-	return render_template('alarm.html')
+	job_date_times = extract_dates_names(sched.get_jobs())
+	return render_template('alarm.html', job_date_times)
 
 if __name__ == "__main__":
 	app.secret_key = 'Soeren is the gr3atest OMGWAT'
