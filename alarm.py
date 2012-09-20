@@ -2,6 +2,7 @@ from flask import Flask, session, redirect, url_for, escape, request, flash
 from flask import render_template
 from datetime import datetime
 from apscheduler.scheduler import Scheduler
+from random import randrange
 
 app = Flask(__name__)
 sched = Scheduler()
@@ -23,13 +24,21 @@ def main_page():
 		print request.form['minute']
 		jobdate = datetime(int(request.form['year']), int(request.form['month']), int(request.form['day']), int(request.form['hour']), int(request.form['minute']))
 		print jobdate
-		job = sched.add_date_job(test, jobdate)
+		sched.add_date_job(test, jobdate, name = randrange(1, 1000000000))
 	
 		flash('Alarm added')
 
 
-	#job_date_times = extract_dates_names(sched.get_jobs())
-	return render_template('alarm.html', job_date_times)
+	job_date_times = extract_dates_names(sched.get_jobs())
+	return render_template('alarm.html', job_date_times=job_date_times)
+
+@app.route("/delete/<jobname>")
+def delete(jobname):
+	filtered = [job for job in sched.get_jobs() if str(job.name)==str(jobname)]
+	for job in sched.get_jobs():
+		print job.name
+	sched.unschedule_job(filtered[0])
+	return redirect('/')
 
 if __name__ == "__main__":
 	app.secret_key = 'Soeren is the gr3atest OMGWAT'

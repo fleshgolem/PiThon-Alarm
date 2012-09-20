@@ -84,13 +84,13 @@ window.onload=function(){
   populatedropdowntime("hourdropdown", "minutedropdown")
 
 }
+
 </script>
-
-
---{% for job_datetime in job_date_times %}
-<div class="row-fluid">
-<div class="span1"> {{ job_datetime[0] }}</div>
-<div class="span1"> {{ job_datetime[1] }}</div>
+{% for job_datetime in job_date_times %}
+<div class="well">
+<div class="span3"> {{ job_datetime[1] }}</div>
+<div class="span1"> <a class="close" href="delete/{{ job_datetime[0] }}">&times;</a> </div>
 </div>
 {% endfor %}
+
 {% endblock %}
