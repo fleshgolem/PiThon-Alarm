@@ -1,3 +1,4 @@
+
 {% extends "layout.html" %}
 {% block body %}
 
@@ -84,4 +85,12 @@ window.onload=function(){
 
 }
 </script>
+
+
+--{% for job_datetime in job_date_times %}
+<div class="row-fluid">
+<div class="span1"> {{ job_datetime[0] }}</div>
+<div class="span1"> {{ job_datetime[1] }}</div>
+</div>
+{% endfor %}
 {% endblock %}

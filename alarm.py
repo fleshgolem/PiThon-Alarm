@@ -8,14 +8,16 @@ sched = Scheduler()
 sched.start()
 def test():
 	print "yeah"
+
 def extract_date_name(job):
-	return (job.name, job.trigger.run_date)
+	return (job.name, str(job.trigger.run_date))
 
 def extract_dates_names(jobs):
 	return [extract_date_name(x) for x in jobs]
 
 @app.route("/", methods=['GET','POST'])
 def main_page():
+	print ("a")
 	if request.method == 'POST':
 		print request.form['hour']
 		print request.form['minute']
@@ -24,10 +26,9 @@ def main_page():
 		job = sched.add_date_job(test, jobdate)
 	
 		flash('Alarm added')
-	else:
-		pass
 
-	job_date_times = extract_dates_names(sched.get_jobs())
+
+	#job_date_times = extract_dates_names(sched.get_jobs())
 	return render_template('alarm.html', job_date_times)
 
 if __name__ == "__main__":
