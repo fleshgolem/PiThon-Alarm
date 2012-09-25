@@ -10,10 +10,16 @@
   <div class=metanav>
    </div>
   {% for message in get_flashed_messages() %}
+    {% if message[0] %}
+    <div class="alert alert-error">
+    {% else %}
     <div class="alert alert-success">
+    {% endif %}
       <button type="button" class="close" data-dismiss="alert">×</button>
-      {{ message }}
+      {{ message[1] }}
     </div>
+    
+
   {% endfor %}
   {% block body %}{% endblock %}
 </div>

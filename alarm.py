@@ -5,6 +5,7 @@ from apscheduler.scheduler import Scheduler
 from random import randrange
 from mpd import MPDClient
 from socket import error as SocketError
+import ConfigParser
 
 app = Flask(__name__)
 app.secret_key = 'Soeren is the gr3atest OMGWAT'
@@ -12,9 +13,12 @@ app.secret_key = 'Soeren is the gr3atest OMGWAT'
 sched = Scheduler()
 sched.start()
 
-HOST = 'localhost'
-PORT = '6600'
-PASSWORD = 'dreck'
+config = ConfigParser.RawConfigParser()
+config.read('mpd.cfg')
+
+HOST = config.get("mpd","host")
+PORT = config.get("mpd","port")
+PASSWORD = config.get("mpd","password")
 
 mpd = MPDClient()
 
@@ -43,11 +47,12 @@ def main_page():
     print request.form['minute']
     jobdate = datetime(int(request.form['year']), int(request.form['month']), int(request.form['day']), int(request.form['hour']), int(request.form['minute']))
     print jobdate
-    sched.add_date_job(play, jobdate, name = randrange(1, 1000000000))
+    try:
+      sched.add_date_job(play, jobdate, name = randrange(1, 1000000000))
+      flash((False,'Alarm added'))
+    except:
+      flash((True, 'Job not added, would never run'))
   
-    flash('Alarm added')
-
-
   job_date_times = extract_dates_names(sched.get_jobs())
   return render_template('alarm.html', job_date_times=job_date_times)
 
