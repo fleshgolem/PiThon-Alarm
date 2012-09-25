@@ -7,6 +7,8 @@ from mpd import MPDClient
 from socket import error as SocketError
 
 app = Flask(__name__)
+app.secret_key = 'Soeren is the gr3atest OMGWAT'
+
 sched = Scheduler()
 sched.start()
 
@@ -58,5 +60,5 @@ def delete(jobname):
   return redirect('/')
 
 if __name__ == "__main__":
-  app.secret_key = 'Soeren is the gr3atest OMGWAT'
+  
   app.run(debug=True,host='0.0.0.0')
