@@ -6,6 +6,7 @@ from random import randrange
 from mpd import MPDClient
 from socket import error as SocketError
 import ConfigParser
+import os
 
 app = Flask(__name__)
 app.secret_key = 'Soeren is the gr3atest OMGWAT'
@@ -14,11 +15,13 @@ sched = Scheduler()
 sched.start()
 
 config = ConfigParser.RawConfigParser()
-config.read('mpd.cfg')
-
-HOST = config.get("mpd","host")
-PORT = config.get("mpd","port")
-PASSWORD = config.get("mpd","password")
+config.read(os.getcwd() + 'mpd.cfg')
+try:
+  HOST = config.get("mpd","host")
+  PORT = config.get("mpd","port")
+  PASSWORD = config.get("mpd","password")
+except:
+  print os.getcwd()
 
 mpd = MPDClient()
 
