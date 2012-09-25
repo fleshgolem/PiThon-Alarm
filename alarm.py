@@ -15,26 +15,26 @@ sched = Scheduler()
 sched.start()
 
 config = ConfigParser.RawConfigParser()
-config.read(os.getcwd() + 'mpd.cfg')
-try:
-  HOST = config.get("mpd","host")
-  PORT = config.get("mpd","port")
-  PASSWORD = config.get("mpd","password")
-except:
-  print os.getcwd()
+
+config.read('mpd.cfg')
+
+HOST = config.get("mpd", "host")
+PORT = config.get("mpd", "port")
+PASSWORD = config.get("mpd", "password")
+
 
 mpd = MPDClient()
 
 
 def play():
   try:
+    mpd.connect(host=HOST, port=PORT)
     if PASSWORD:
-      mpd.connect(host=HOST, port=PORT, PASSWORD=PASSWORD)
-    else:
-      mpd.connect(host=HOST, port=PORT) 
+      mpd.password(PASSWORD)
+
     mpd.play()
   except SocketError:
-    print "Connection Error"
+    flash((True, 'Connection Error'))
 
 def extract_date_name(job):
   return (job.name, str(job.trigger.run_date))
