@@ -5,36 +5,31 @@ from apscheduler.scheduler import Scheduler
 from random import randrange
 from mpd import MPDClient
 from socket import error as SocketError
-import ConfigParser
 import os
+import logging
 
+logging.basicConfig()
 app = Flask(__name__)
 app.secret_key = 'Soeren is the gr3atest OMGWAT'
 
 sched = Scheduler()
 sched.start()
 
-config = ConfigParser.RawConfigParser()
 
-config.read('mpd.cfg')
 
-HOST = config.get("mpd", "host")
-PORT = config.get("mpd", "port")
-PASSWORD = config.get("mpd", "password")
-
+HOST = 'localhost'
+PORT = '6600'
+PASSWORD = False
 
 mpd = MPDClient()
 
 
 def play():
-  try:
-    mpd.connect(host=HOST, port=PORT)
-    if PASSWORD:
-      mpd.password(PASSWORD)
+  mpd.connect(host=HOST, port=PORT)
+  if PASSWORD:
+    mpd.password(PASSWORD)
 
-    mpd.play()
-  except SocketError:
-    flash((True, 'Connection Error'))
+  mpd.play()
 
 def extract_date_name(job):
   return (job.name, str(job.trigger.run_date))
