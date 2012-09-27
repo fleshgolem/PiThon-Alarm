@@ -50,6 +50,17 @@ function populatedropdowntime(hourfield, minutefield){
     minutefield.options[minRounded/5] = new Option(minRounded, minRounded, true, true)
   }
   </script>
+  {% if mpd_playing %}
+  <div class="hero-unit">
+    <h2>WAKE UP!</h2>
+    <a class="btn btn-info bigButton" href="#">
+      Snooze 
+    </a>
+    <a class="btn btn-danger bigButton" href="#">
+        Stop
+      </a>
+  </div>
+  {%endif%}
   <h2> New Alarm </h2>
   <div class="row-fluid">
 
@@ -88,8 +99,8 @@ window.onload=function(){
 </script>
 {% for job_datetime in job_date_times %}
 <div class="well">
-<div class="span3"> {{ job_datetime[1] }}</div>
-<div class="span1"> <a class="close" href="delete/{{ job_datetime[0] }}">&times;</a> </div>
+  <div class="span3"> {{ job_datetime[1] }}</div>
+  <div class="span1"> <a class="close" href="delete/{{ job_datetime[0] }}">&times;</a> </div>
 </div>
 {% endfor %}
 

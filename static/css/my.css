@@ -1,0 +1,6 @@
+.bigButton{
+    width: 300px;
+    height:75px;
+    display: table-cell;
+    vertical-align: middle;
+}

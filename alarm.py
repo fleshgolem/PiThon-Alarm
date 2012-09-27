@@ -40,7 +40,14 @@ def extract_dates_names(jobs):
 
 @app.route("/", methods=['GET','POST'])
 def main_page():
-  print ("a")
+  
+  #get current mpd state
+  try:
+    mpd.connect(host=HOST, port=PORT)
+    mpdPlaying = (mpd.status()['state'] == play)
+  except:
+    mpdPlaying = False
+
   if request.method == 'POST':
     print request.form['hour']
     print request.form['minute']
@@ -53,7 +60,8 @@ def main_page():
       flash((True, 'Job not added, would never run'))
   
   job_date_times = extract_dates_names(sched.get_jobs())
-  return render_template('alarm.html', job_date_times=job_date_times)
+  print mpdPlaying
+  return render_template('alarm.html', job_date_times=job_date_times, mpd_playing = mpdPlaying)
 
 @app.route("/delete/<jobname>")
 def delete(jobname):
