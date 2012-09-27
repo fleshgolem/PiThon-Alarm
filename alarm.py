@@ -8,7 +8,7 @@ from socket import error as SocketError
 import os
 import logging
 
-logging.basicConfig()
+#logging.basicConfig()
 app = Flask(__name__)
 app.secret_key = 'Soeren is the gr3atest OMGWAT'
 
@@ -30,6 +30,7 @@ def play():
     mpd.password(PASSWORD)
 
   mpd.play()
+  mpd.disconnect()
 
 def extract_date_name(job):
   alarm_date = job.trigger.run_date
@@ -45,7 +46,9 @@ def main_page():
   try:
     mpd.connect(host=HOST, port=PORT)
     mpdPlaying = (mpd.status()['state'] == 'play')
+    mpd.disconnect()
   except:
+    print 'Connection error'
     mpdPlaying = False
 
   if request.method == 'POST':
@@ -73,25 +76,25 @@ def delete(jobname):
 
 @app.route("/snooze")
 def snooze():
-  try:
-    mpd.connect(host=HOST, port=PORT)
-    mpd.stop()
-    try:
-      sched.add_date_job(play, jobtime, name = randrange(1, 1000000000))
-      flash((False,'SNOOOOOZE'))
-    except:
-      pass
-  except:
-    pass
+  mpd.connect(host=HOST, port=PORT)
+  mpd.pause()
+  mpd.disconnect()
+  jobtime = datetime.now() + timedelta(minutes=10)
+  job = sched.add_date_job(play, jobtime, name = randrange(1, 1000000000))
+  flash((False,'SNOOOOOZE'))
 
+  return redirect('/')
 
+@app.route("/stop")
 def stop():
   try:
     mpd.connect(host=HOST, port=PORT)
     mpd.stop()
-    jobtime = timedelta(minutes=10)
+    mpd.disconnect()
   except:
     pass
+  return redirect('/')
+
     
 if __name__ == "__main__":
   
