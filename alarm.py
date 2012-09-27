@@ -1,6 +1,6 @@
 from flask import Flask, redirect, request, flash
 from flask import render_template
-from datetime import datetime
+from datetime import datetime, timedelta
 from apscheduler.scheduler import Scheduler
 from random import randrange
 from mpd import MPDClient
@@ -44,9 +44,8 @@ def main_page():
   #get current mpd state
   try:
     mpd.connect(host=HOST, port=PORT)
-    mpdPlaying = (mpd.status()['state'] == 'play')
+    mpdPlaying = (mpd.status()['state'] == play)
   except:
-    print 'Connection Error'
     mpdPlaying = False
 
   if request.method == 'POST':
@@ -72,6 +71,23 @@ def delete(jobname):
   sched.unschedule_job(filtered[0])
   return redirect('/')
 
+@app.route("/snooze")
+def snooze():
+  try:
+    mpd.connect(host=HOST, port=PORT)
+    mpd.stop()
+    #TODO: schedule new alarm
+
+def stop():
+  try:
+    mpd.connect(host=HOST, port=PORT)
+    mpd.stop()
+    jobtime = timedelta(minutes=10)
+    try:
+      sched.add_date_job(play, jobtime, name = randrange(1, 1000000000))
+      flash((False,'SNOOOOOZE'))
+
 if __name__ == "__main__":
   
   app.run(debug=True,host='0.0.0.0')
+  
