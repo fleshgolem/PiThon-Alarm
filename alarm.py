@@ -44,8 +44,9 @@ def main_page():
   #get current mpd state
   try:
     mpd.connect(host=HOST, port=PORT)
-    mpdPlaying = (mpd.status()['state'] == play)
+    mpdPlaying = (mpd.status()['state'] == 'play')
   except:
+    print 'Connection Error'
     mpdPlaying = False
 
   if request.method == 'POST':
