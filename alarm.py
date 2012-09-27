@@ -32,7 +32,8 @@ def play():
   mpd.play()
 
 def extract_date_name(job):
-  return (job.name, str(job.trigger.run_date))
+  alarm_date = job.trigger.run_date
+  return (job.name, alarm_date.strftime("%A %d-%m %H:%M"))
 
 def extract_dates_names(jobs):
   return [extract_date_name(x) for x in jobs]
