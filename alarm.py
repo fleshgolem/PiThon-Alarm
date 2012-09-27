@@ -76,17 +76,23 @@ def snooze():
   try:
     mpd.connect(host=HOST, port=PORT)
     mpd.stop()
-    #TODO: schedule new alarm
+    try:
+      sched.add_date_job(play, jobtime, name = randrange(1, 1000000000))
+      flash((False,'SNOOOOOZE'))
+    except:
+      pass
+  except:
+    pass
+
 
 def stop():
   try:
     mpd.connect(host=HOST, port=PORT)
     mpd.stop()
     jobtime = timedelta(minutes=10)
-    try:
-      sched.add_date_job(play, jobtime, name = randrange(1, 1000000000))
-      flash((False,'SNOOOOOZE'))
-
+  except:
+    pass
+    
 if __name__ == "__main__":
   
   app.run(debug=True,host='0.0.0.0')
