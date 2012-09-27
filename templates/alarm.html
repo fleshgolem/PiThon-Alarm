@@ -53,10 +53,10 @@ function populatedropdowntime(hourfield, minutefield){
   {% if mpd_playing %}
   <div class="hero-unit">
     <h2>WAKE UP!</h2>
-    <a class="btn btn-info bigButton" href="#">
+    <a class="btn btn-info bigButton" href="{{url_for('snooze')}}">
       Snooze 
     </a>
-    <a class="btn btn-danger bigButton" href="#">
+    <a class="btn btn-danger bigButton" href="{{url_for('stop')}}">
         Stop
       </a>
   </div>
