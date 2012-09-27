@@ -76,12 +76,15 @@ def delete(jobname):
 
 @app.route("/snooze")
 def snooze():
-  mpd.connect(host=HOST, port=PORT)
-  mpd.pause()
-  mpd.disconnect()
-  jobtime = datetime.now() + timedelta(minutes=10)
-  job = sched.add_date_job(play, jobtime, name = randrange(1, 1000000000))
-  flash((False,'SNOOOOOZE'))
+  try:
+    mpd.connect(host=HOST, port=PORT)
+    mpd.pause()
+    mpd.disconnect()
+    jobtime = datetime.now() + timedelta(minutes=10)
+    job = sched.add_date_job(play, jobtime, name = randrange(1, 1000000000))
+    flash((False,'SNOOOOOZE'))
+  except:
+    flash((True,'Something went wrong'))
 
   return redirect('/')
 
