@@ -15,7 +15,10 @@ app.secret_key = 'Soeren is the gr3atest OMGWAT'
 sched = Scheduler()
 sched.start()
 
-engine = create_engine('sqlite:///alarm.db', echo=True)
+path = os.path.join(os.path.dirname(__file__), 'alarm.db')
+print path
+engine = create_engine('sqlite:///' + path)
+#engine = create_engine('sqlite:///alarm.db', echo=True)
 metadata = MetaData()
 alarms = Table('alarms', metadata, Column('id', Integer, primary_key=True), Column('date', DateTime))
 
@@ -44,7 +47,8 @@ def readDB():
   for row in results:
     try:
       add_job(row['id'], row['date'])
-    except:
+    except Exception as e:
+      print e
       delete_job_from_db_by_name(row['id'], conn)
   conn.close()
 
